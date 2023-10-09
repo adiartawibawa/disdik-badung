@@ -12,11 +12,18 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        // \App\Models\User::factory(10)->create();
+        // Reset cached roles and permissions
+        app()[\Spatie\Permission\PermissionRegistrar::class]->forgetCachedPermissions();
 
-        // \App\Models\User::factory()->create([
-        //     'name' => 'Test User',
-        //     'email' => 'test@example.com',
-        // ]);
+        // Ask for db migration refresh, default is no
+        if ($this->command->confirm('Do you wish to refresh migration before seeding, it will clear all old data ?')) {
+            // Call the php artisan migrate:refresh
+            $this->command->call('migrate:refresh');
+            $this->command->warn("Data cleared, starting from blank database.");
+        }
+
+        $this->call([
+            RolesAndPermissionsSeeder::class
+        ]);
     }
 }
