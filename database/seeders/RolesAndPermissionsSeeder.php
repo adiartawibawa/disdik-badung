@@ -79,28 +79,24 @@ class RolesAndPermissionsSeeder extends Seeder
     private function createUser($role)
     {
         if ($role->name == Role::ROOT) {
-            $user = User::create([
+            $userRoot = User::create([
                 'name' => 'Adi Arta Wibawa',
-                'current_role_id' => $role->id,
                 'email' => 'surat.buat.adi@gmail.com',
                 'email_verified_at' => now(),
+                'current_role_id' => $role->id,
                 'password' => Hash::make('fujiyama'),
                 'remember_token' => Str::random(10),
             ]);
-        } else {
-            // assign root user has every role the application
-            $root = User::whereEmail('surat.buat.adi@gmail.com')->first();
-            $root->assignRole($role->id);
+            $userRoot->assignRole($role);
 
-            $user = User::factory()->create(['current_role_id' => $role->id]);
-        }
-
-        $user->assignRole($role);
-
-        if ($role->name == Role::ROOT) {
             $this->command->info('Here is your super user details to login:');
-            $this->command->warn($user->email);
+            $this->command->warn($userRoot->email);
             $this->command->warn('Password is "loveofmylife"');
+        } else {
+            $user = User::factory()->create(['current_role_id' => $role->id]);
+            $user->assignRole($role);
+            $root = User::whereEmail('surat.buat.adi@gmail.com')->first();
+            $root->assignRole($role);
         }
     }
 }
