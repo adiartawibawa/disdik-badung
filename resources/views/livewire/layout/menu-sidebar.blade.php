@@ -8,7 +8,7 @@
             <x-menu-item title="Layanan" icon="o-ticket" />
             <x-menu-separator title="Settings" />
             <x-menu-sub title="Settings" icon="o-cog-6-tooth">
-                <x-menu-item title="Users" icon="o-user-group" link="{{ route('data.user') }}" />
+                <x-menu-item title="Users" icon="o-user-group" link="{{ route('users') }}" />
                 <x-menu-item title="Application" icon="o-wrench-screwdriver" />
                 <x-menu-item title="Roles & Permissions" icon="o-identification" />
             </x-menu-sub>

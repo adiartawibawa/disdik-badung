@@ -10,6 +10,9 @@ export default {
         "./resources/views/**/*.blade.php",
         "./vendor/robsontenorio/mary/src/View/Components/**/*.php",
     ],
+    daisyui: {
+        themes: ["light", "dark"],
+    },
 
     theme: {
         extend: {

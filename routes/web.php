@@ -14,16 +14,22 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::view('/', 'welcome')->name('welcome');
-
-Route::view('dashboard', 'dashboard')
-    ->middleware(['auth', 'verified'])
-    ->name('dashboard');
-
-Route::view('profile', 'profile')
-    ->middleware(['auth'])
-    ->name('profile');
-
-Route::get('/users', DataUser::class)->name('data.user');
-
 require __DIR__ . '/auth.php';
+
+Route::middleware(['guest'])->group(function () {
+    // Landing Page
+    Route::view('/', 'welcome')->name('welcome');
+});
+
+
+Route::middleware(['auth'])->group(function () {
+    // Profile Page
+    Route::view('profile', 'profile')->name('profile');
+
+    Route::middleware(['verified'])->group(function () {
+        // Dashboard
+        Route::view('dashboard', 'dashboard')->name('dashboard');
+        // Manajemen User
+        Route::get('/users', DataUser::class)->name('users');
+    });
+});

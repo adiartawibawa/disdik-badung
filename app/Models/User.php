@@ -2,7 +2,7 @@
 
 namespace App\Models;
 
-// use Illuminate\Contracts\Auth\MustVerifyEmail;
+use Illuminate\Contracts\Auth\MustVerifyEmail;
 
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
@@ -14,7 +14,7 @@ use Spatie\MediaLibrary\HasMedia;
 use Spatie\MediaLibrary\InteractsWithMedia;
 use Spatie\Permission\Traits\HasRoles;
 
-class User extends Authenticatable implements HasMedia
+class User extends Authenticatable implements HasMedia, MustVerifyEmail
 {
     use HasApiTokens, HasFactory, Notifiable, HasRoles, HasUuids, InteractsWithMedia;
 
@@ -66,5 +66,22 @@ class User extends Authenticatable implements HasMedia
     public function getVerifiedAtFormattedAttribute()
     {
         return Carbon::parse($this->attributes['email_verified_at'])->format('d, M Y H:i:s');
+    }
+
+    public function getAvatarUrlAttribute()
+    {
+        return null;
+    }
+
+    public function scopeSearch($query, $term)
+    {
+        $term = "%$term%";
+        $query->where(function ($query) use ($term) {
+            $query->where('name', 'like', $term)
+                ->orWhere('email', 'like', $term)
+                ->orWhereHas('roles', function ($query) use ($term) {
+                    $query->where('name', 'like', $term);
+                });
+        });
     }
 }

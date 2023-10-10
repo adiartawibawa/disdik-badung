@@ -15,9 +15,11 @@
         "livewire/volt": "^1.0",
         "robsontenorio/mary": "^0.39.1",
         "spatie/laravel-medialibrary": "^10.13",
-        "spatie/laravel-permission": "^5.11"
+        "spatie/laravel-permission": "^5.11",
+        "wire-elements/modal": "^2.0"
     },
     "require-dev": {
+        "barryvdh/laravel-debugbar": "^3.9",
         "fakerphp/faker": "^1.9.1",
         "laravel/pint": "^1.0",
         "laravel/sail": "^1.18",
